@@ -132,7 +132,7 @@ public class SQLiteConnectionManager {
         try (Connection conn = DriverManager.getConnection(databaseURL);
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, Integer.toString(id));
+            pstmt.setInt(1, id);
             pstmt.setString(2, word);
                     
 
