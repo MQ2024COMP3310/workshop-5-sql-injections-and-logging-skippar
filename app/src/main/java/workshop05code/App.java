@@ -38,15 +38,19 @@ public class App {
 
         wordleDatabaseConnection.createNewDatabase("words.db");
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
-            System.out.println("Wordle created and connected.");
+            
+            logger.log(Level.INFO, "The wordle database is created and connected.");
         } else {
-            System.out.println("Not able to connect. Sorry!");
+
+            logger.log(Level.INFO, "The wordle database was unable to connect.");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
-            System.out.println("Wordle structures in place.");
+
+            logger.log(Level.INFO, "The wordletable structures created");
         } else {
-            System.out.println("Not able to launch. Sorry!");
+
+            logger.log(Level.INFO, "Unable to create the wordletable strcutures");
             return;
         }
 
@@ -56,17 +60,18 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                logger.log(Level.INFO, "valid word: {0}", line);
                 // input validation for adding words 
                 if(line.matches("[a-z]{4}")) { //only add valid ones and ignore if not
                     wordleDatabaseConnection.addValidWord(i, line);
+                } else { //log invalid word in data.txt 
+                    logger.log(Level.SEVERE, "invalid word: {0}, could not be added", line);
                 }
                 i++;
             }
 
         } catch (IOException e) {
-            System.out.println("Not able to load . Sorry!");
-            System.out.println(e.getMessage());
+            logger.log(Level.WARNING, "Unable to laod data.txt file", e);
             return;
         }
 
@@ -87,6 +92,7 @@ public class App {
                     // check and tell user if word was valid or not 
                     if(!guess.matches("[a-z]{4}")) {
                         System.out.println("This guess was NOT valid. Enter a 4 letter word!");
+                        logger.log(Level.INFO, "Invalid guess: {0}", guess);
                     } else {
                     System.out.println("Sorry. This word is NOT in the the list.\n");
                     }
